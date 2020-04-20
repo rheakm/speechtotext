@@ -6,18 +6,40 @@
 </head>
 <body>
 
+  <div class="header">
+    <h1>Cant think of a name :(</h1>
+  </div>
+
   <div class="words" contenteditable>
   </div>
 
+  <div class="instructions">
+    <h3>Try the following commands:</h3>
+    <label>"what's the weather?"</label>
+    <br>
+    <label>"play music" OR "open spotify"</label>
+    <br>
+    <label>"define ..."</label>
+    <br>
+    <label>"open calculator"</label>
+    <br>
+    <label>"open learn"</label>
+    <br>
+    <label>"open youtube</label>
+    <br>
+    <label>"i'm sad"</label>
+    <br>
+    <label>"i'm bored"</label>
+    <br>
+  </div>
 <script>
   window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition; //speechRecognition only works in firefox, webkitSpeechRecognition is for chrome
   const speech = new SpeechRecognition();
   speech.interimResults = true;
 
-  let paragraph = document.createElement('p');
+  let paragraph = document.createElement('text');
   const words = document.querySelector('.words');
   words.appendChild(paragraph);
-
   speech.addEventListener('result', e => { //listens till the end if a sentence.
       const transcript = Array.from(e.results) //create an array from the results
       .map(result => result[0]) //select the first item which holds the transcript
@@ -26,8 +48,30 @@
 
       paragraph.textContent = transcript;
       if(e.results[0].isFinal){ //isFinal is an attribute that is set to true when the browser is confident in its conversion
-        paragraph = document.createElement('p');
-        words.appendChild(paragraph);
+        if(transcript.includes("Define")){
+            window.open("https://google.com/search?q="+ transcript);
+        }
+        if(transcript.includes("play music") || transcript.includes("Spotify")){
+            window.open("https://open.spotify.com/");
+        }
+        if(transcript.includes("weather")){
+            window.open("https://www.theweathernetwork.com");
+        }
+        if(transcript.includes("YouTube")){
+            window.open("https://www.youtube.com");
+        }
+        if(transcript.includes("calculator")){
+            window.open("https://google.com/search?q=calculator");
+        }
+        if(transcript.includes("learn")){
+            window.open("https://learn.uwaterloo.ca/d2l/home");
+        }
+        if(transcript.includes("bored")){
+            window.open("https://www.reddit.com/r/AskReddit/");
+        }
+        if(transcript.includes("sad")){
+            window.open("http://www.happynews.com/");
+        }
       }
   })
   speech.addEventListener('end', speech.start); // once a sentence ends, wait for the speech to start again.
@@ -42,10 +86,21 @@
     }
 
     body {
-      background: #0084ff;
-      font-family: 'helvetica neue';
+      background: #f1cb23;
+      font-family: 'Comic Sans MS';
       font-weight: 200;
       font-size: 20px;
+    }
+
+    .header {
+      max-width: 500px;
+      margin: 50px auto;
+      border-radius: 5px;
+      padding: 1rem 2rem 1rem ;
+      position: relative;
+      line-height: 3rem;
+      text-align: center;
+      color: rgb(218, 100, 45);
     }
 
     .words {
@@ -54,8 +109,19 @@
       background: white;
       border-radius: 5px;
       box-shadow: 10px 10px 0 rgba(0,0,0,0.1);
-      padding: 1rem 2rem 1rem 5rem;
-      background: -webkit-gradient(linear, 0 0, 0 100%, from(#d9eaf3), color-stop(4%, #fff)) 0 4px;
+      padding: 1rem 2rem 1rem ;
+      background-size: 100% 3rem;
+      position: relative;
+      line-height: 3rem;
+    }
+
+    .instructions {
+      max-width: 500px;
+      margin: 50px auto;
+      background: white;
+      border-radius: 5px;
+      box-shadow: 10px 10px 0 rgba(0,0,0,0.1);
+      padding: 1rem 2rem 1rem ;
       background-size: 100% 3rem;
       position: relative;
       line-height: 3rem;
@@ -65,16 +131,6 @@
       margin: 0 0 3rem;
     }
 
-    .words:before {
-      content: '';
-      position: absolute;
-      width: 4px;
-      top: 0;
-      left: 30px;
-      bottom: 0;
-      border: 1px solid;
-      border-color: transparent #efe4e4;
-    }
   </style>
 
 </body>
