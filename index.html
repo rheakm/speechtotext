@@ -2,18 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Speech Detection</title>
+  <title>Talk2Me</title>
 </head>
+
 <body>
 
   <div class="header">
-    <h1>Cant think of a name :(</h1>
+    <h1>Talk2Me</h1>
   </div>
 
   <div class="words" contenteditable>
   </div>
 
   <div class="instructions">
+    <label>say "hi buddy" or "ok buddy" to start me!</label>
     <h3>Try the following commands:</h3>
     <label>"what's the weather?"</label>
     <br>
@@ -31,54 +33,61 @@
     <br>
     <label>"i'm bored"</label>
     <br>
+    <label>"Tell me a joke"</label>
+    <br>
   </div>
-<script>
-  window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition; //speechRecognition only works in firefox, webkitSpeechRecognition is for chrome
-  const speech = new SpeechRecognition();
-  speech.interimResults = true;
 
-  let paragraph = document.createElement('text');
-  const words = document.querySelector('.words');
-  words.appendChild(paragraph);
-  speech.addEventListener('result', e => { //listens till the end if a sentence.
-      const transcript = Array.from(e.results) //create an array from the results
-      .map(result => result[0]) //select the first item which holds the transcript
-      .map(result => result.transcript) //selects the transcript which holds the text spoken
-      .join('')
+  <script>
+    window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition; //speechRecognition only works in firefox, webkitSpeechRecognition is for chrome
+    const speech = new SpeechRecognition();
+    speech.interimResults = true;
 
-      paragraph.textContent = transcript;
-      if(e.results[0].isFinal){ //isFinal is an attribute that is set to true when the browser is confident in its conversion
-        if(transcript.includes("Define")){
-            window.open("https://google.com/search?q="+ transcript);
-        }
-        if(transcript.includes("play music") || transcript.includes("Spotify")){
-            window.open("https://open.spotify.com/");
-        }
-        if(transcript.includes("weather")){
-            window.open("https://www.theweathernetwork.com");
-        }
-        if(transcript.includes("YouTube")){
-            window.open("https://www.youtube.com");
-        }
-        if(transcript.includes("calculator")){
-            window.open("https://google.com/search?q=calculator");
-        }
-        if(transcript.includes("learn")){
-            window.open("https://learn.uwaterloo.ca/d2l/home");
-        }
-        if(transcript.includes("bored")){
-            window.open("https://www.reddit.com/r/AskReddit/");
-        }
-        if(transcript.includes("sad")){
-            window.open("http://www.happynews.com/");
-        }
-      }
-  })
-  speech.addEventListener('end', speech.start); // once a sentence ends, wait for the speech to start again.
-  speech.start();
+    let paragraph = document.createElement('text');
+    const words = document.querySelector('.words');
+    words.appendChild(paragraph);
+    speech.addEventListener('result', e => { //listens till the end if a sentence.
+        const transcript = Array.from(e.results) //create an array from the results
+        .map(result => result[0]) //select the first item which holds the transcript
+        .map(result => result.transcript) //selects the transcript which holds the text spoken
+        .join('')
 
-</script>
+        if(e.results[0].isFinal){ //isFinal is an attribute that is set to true when the browser is confident in its conversion
+          if(transcript.includes("hey buddy") || transcript.includes("hi buddy") || transcript.includes("okay buddy")){
+            paragraph.textContent = transcript;
+            if(transcript.includes("Define")){
+                window.open("https://google.com/search?q="+ transcript);
+            }
+            if(transcript.includes("play music") || transcript.includes("Spotify")){
+                window.open("https://open.spotify.com/");
+            }
+            if(transcript.includes("weather")){
+                window.open("https://www.theweathernetwork.com");
+            }
+            if(transcript.includes("YouTube")){
+                window.open("https://www.youtube.com");
+            }
+            if(transcript.includes("calculator")){
+                window.open("https://google.com/search?q=calculator");
+            }
+            if(transcript.includes("learn")){
+                window.open("https://learn.uwaterloo.ca/d2l/home");
+            }
+            if(transcript.includes("bored")){
+                window.open("https://www.reddit.com/r/AskReddit/");
+            }
+            if(transcript.includes("sad")){
+                window.open("http://www.happynews.com/");
+            }
+            if(transcript.includes("joke")){
+                window.open("you.html");
+            }
+          }
+        }
+    })
+    speech.addEventListener('end', speech.start); // once a sentence ends, wait for the speech to start again.
+    speech.start();
 
+  </script>
 
   <style>
     html {
@@ -125,10 +134,6 @@
       background-size: 100% 3rem;
       position: relative;
       line-height: 3rem;
-    }
-    
-    p {
-      margin: 0 0 3rem;
     }
 
   </style>
